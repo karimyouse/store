@@ -37,11 +37,46 @@
         main {
             padding-top: 20px;
         }
+        .navbar-nav .nav-link {
+            padding: 0.5rem 1rem;
+        }
     </style>
 </head>
 <body>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ route('products.index') }}">Karim Store</a>
+        
+        <!-- إضافة قسم تسجيل الدخول والتسجيل -->
+        <ul class="navbar-nav px-3">
+            @guest
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                </li>
+                @if (Route::has('register'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">Register</a>
+                    </li>
+                @endif
+            @else
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        {{ Auth::user()->name }}
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            @endguest
+        </ul>
     </header>
     
     <div class="container-fluid">
@@ -78,7 +113,7 @@
                     </div>
                 @endif
                 
-                @if($errors->any())
+                @if($errors->any()))
                     <div class="alert alert-danger mt-3">
                         <ul class="mb-0">
                             @foreach($errors->all() as $error)
